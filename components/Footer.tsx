@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Map, Clock, Mail, ExternalLink } from 'lucide-react';
+import { Phone, Map, Clock } from 'lucide-react';
 import { SectionId } from '../types';
 
 export const Footer: React.FC = () => {
