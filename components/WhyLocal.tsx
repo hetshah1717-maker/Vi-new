@@ -5,8 +5,12 @@ import { SectionId } from '../types';
 
 export const WhyLocal: React.FC = () => {
   return (
-    <section id={SectionId.WHY_LOCAL} className="py-24 bg-white overflow-hidden">
-      <div className="container mx-auto px-4">
+    <section id={SectionId.WHY_LOCAL} className="py-24 bg-white overflow-hidden relative">
+      
+      {/* Fiber Line Termination */}
+      <div className="absolute left-8 md:left-1/2 top-0 h-32 w-1 md:-ml-0.5 bg-gradient-to-b from-vi-purple to-transparent z-0 opacity-20"></div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-20">
           
           {/* Text Content */}
@@ -50,7 +54,7 @@ export const WhyLocal: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Animated Map Visual - Zoom Effect */}
+          {/* Animated Map Visual - Pin Drop Effect */}
           <div className="lg:w-1/2 relative w-full">
             <motion.div 
               initial={{ opacity: 0, scale: 0.8, y: 50 }}
@@ -58,7 +62,7 @@ export const WhyLocal: React.FC = () => {
               transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
               className="relative bg-white rounded-[2.5rem] p-4 shadow-2xl ring-8 ring-gray-50"
             >
-               <div className="relative overflow-hidden rounded-[2rem] aspect-[4/3] bg-gray-100 border border-gray-200">
+               <div className="relative overflow-hidden rounded-[2rem] aspect-[4/3] bg-gray-100 border border-gray-200 group">
                  {/* Abstract Map Roads */}
                  <div className="absolute inset-0 opacity-40">
                    <div className="absolute top-1/2 left-0 w-full h-12 bg-gray-300 rotate-12 transform -translate-y-1/2 scale-110"></div>
@@ -76,34 +80,46 @@ export const WhyLocal: React.FC = () => {
                    Vastrapur Lake
                  </motion.div>
 
-                 {/* Store Location Pin Animation */}
+                 {/* Store Location Pin Animation - The Drop */}
                  <div className="absolute inset-0 flex items-center justify-center z-20 pb-8">
                    <div className="relative flex flex-col items-center">
                      <motion.div
-                       animate={{ y: [0, -15, 0] }}
-                       transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+                       initial={{ y: -500, opacity: 0 }}
+                       whileInView={{ y: 0, opacity: 1 }}
+                       transition={{ type: "spring", damping: 15, stiffness: 200, delay: 0.2 }}
                        className="relative z-20"
                      >
-                       <MapPin size={64} className="text-vi-red drop-shadow-2xl fill-vi-red text-white" />
+                       <MapPin size={84} className="text-vi-red drop-shadow-2xl fill-vi-red text-white" />
                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full"></div>
                      </motion.div>
                      
-                     {/* Ripple Effect */}
-                     <div className="absolute top-12 w-full flex justify-center z-0">
-                        <span className="flex h-20 w-20 relative">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-vi-red opacity-30"></span>
-                          <span className="relative inline-flex rounded-full h-20 w-20 bg-vi-red opacity-10"></span>
+                     {/* Impact Ripple Effect */}
+                     <div className="absolute top-16 w-full flex justify-center z-0">
+                        <span className="flex h-24 w-24 relative">
+                          <motion.span 
+                            initial={{ scale: 0, opacity: 0 }}
+                            whileInView={{ scale: 2, opacity: 0 }}
+                            transition={{ duration: 1.5, repeat: Infinity, delay: 0.6 }}
+                            className="absolute inline-flex h-full w-full rounded-full bg-vi-red"
+                          ></motion.span>
+                          <motion.span 
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1 }}
+                            transition={{ type: "spring", delay: 0.4 }}
+                            className="relative inline-flex rounded-full h-24 w-24 bg-vi-red opacity-20"
+                          ></motion.span>
                         </span>
                      </div>
 
                      <motion.div 
-                       initial={{ opacity: 0, y: 10 }}
+                       initial={{ opacity: 0, y: 20 }}
                        whileInView={{ opacity: 1, y: 0 }}
                        transition={{ delay: 0.8 }}
-                       className="mt-6 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-xl shadow-xl border border-white/50 text-center min-w-[180px]"
+                       className="mt-8 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-xl shadow-xl border border-white/50 text-center min-w-[200px]"
                      >
                        <p className="font-extrabold text-gray-900 text-lg">Vi Mini Store</p>
                        <p className="text-sm text-gray-600 font-medium">Open until 9:00 PM</p>
+                       <div className="mt-2 text-xs font-bold text-vi-red uppercase tracking-wider">Strongest Signal Here</div>
                      </motion.div>
                    </div>
                  </div>
