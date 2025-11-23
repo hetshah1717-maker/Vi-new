@@ -45,8 +45,9 @@ export const CustomCursor: React.FC = () => {
   return (
     <>
       {/* Primary Dot - Instant movement */}
+      {/* Changed bg to white for better mix-blend-difference contrast on dark backgrounds */}
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 bg-vi-purple rounded-full pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-3 h-3 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference"
         style={{
           x: cursorX,
           y: cursorY,
@@ -69,6 +70,7 @@ export const CustomCursor: React.FC = () => {
           height: isHovering ? 48 : 24,
           borderColor: isHovering ? '#E60000' : 'rgba(230, 0, 0, 0.5)',
           backgroundColor: isHovering ? 'rgba(230, 0, 0, 0.1)' : 'transparent',
+          borderWidth: isHovering ? '2px' : '1px'
         }}
         transition={{
           type: "spring",

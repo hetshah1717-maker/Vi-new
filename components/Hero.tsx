@@ -37,10 +37,10 @@ export const Hero: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center space-x-2 bg-white px-4 py-2 rounded-full border border-gray-100 shadow-sm mb-8"
+          className="inline-flex items-center space-x-2 bg-white px-4 py-2 rounded-full border border-gray-200 shadow-sm mb-8"
         >
           <span className="w-2 h-2 rounded-full bg-vi-red animate-pulse"></span>
-          <span className="text-sm font-semibold text-gray-600 tracking-wide uppercase">Official Mini Store • Vastrapur</span>
+          <span className="text-sm font-semibold text-gray-700 tracking-wide uppercase">Official Mini Store • Vastrapur</span>
         </motion.div>
 
         {/* Staggered Headline */}
@@ -70,7 +70,7 @@ export const Hero: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 1 }}
-          className="text-xl md:text-2xl text-gray-500 max-w-2xl font-light leading-relaxed mb-16"
+          className="text-xl md:text-2xl text-gray-600 max-w-2xl font-light leading-relaxed mb-16"
         >
           Seamless 5G connectivity and instant support, right in your neighborhood.
         </motion.p>
