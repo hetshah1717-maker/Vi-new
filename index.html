@@ -29,6 +29,32 @@
                 purple: '#2E0249', // Deep purple/blue complement
                 dark: '#4A4D4E',
               }
+            },
+            animation: {
+              'gradient-xy': 'gradient-xy 15s ease infinite',
+              'fade-in-down': 'fade-in-down 0.5s ease-out',
+            },
+            keyframes: {
+              'gradient-xy': {
+                '0%, 100%': {
+                  'background-size': '400% 400%',
+                  'background-position': '0% 50%'
+                },
+                '50%': {
+                  'background-size': '400% 400%',
+                  'background-position': '100% 50%'
+                }
+              },
+              'fade-in-down': {
+                '0%': {
+                  opacity: '0',
+                  transform: 'translateY(-10px)'
+                },
+                '100%': {
+                  opacity: '1',
+                  transform: 'translateY(0)'
+                }
+              }
             }
           }
         }
@@ -73,19 +99,40 @@
       "priceRange": "₹₹"
     }
     </script>
-  <script type="importmap">
+    
+    <!-- Public CDN Imports -->
+    <!-- Using explicit 'external' flags to ensure all libraries share the exact same React instance -->
+    <script type="importmap">
 {
   "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react": "https://esm.sh/react@18.2.0",
+    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "lucide-react": "https://esm.sh/lucide-react@0.294.0?external=react",
+    "framer-motion": "https://esm.sh/framer-motion@10.16.4?external=react,react-dom",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24"
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
   }
 }
 </script>
 </head>
   <body>
     <div id="root"></div>
+    
+    <!-- Debug Script: Shows errors on screen if app fails to load -->
+    <script>
+      window.addEventListener('error', function(e) {
+        console.error("Global error caught:", e.error);
+        const root = document.getElementById('root');
+        // Only show error overlay if the app hasn't mounted yet (root is empty)
+        if (root && !root.hasChildNodes()) {
+          const errDiv = document.createElement('div');
+          errDiv.style.cssText = 'position:fixed; top:0; left:0; width:100%; padding:20px; background:#fee; color:red; z-index:9999; font-family:monospace;';
+          errDiv.innerHTML = '<strong>Application Error:</strong><br/>' + e.message + '<br/><br/><em>Check console for more details.</em>';
+          document.body.appendChild(errDiv);
+        }
+      });
+    </script>
   </body>
 </html>
