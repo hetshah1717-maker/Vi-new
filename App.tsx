@@ -4,10 +4,12 @@ import { Services } from './components/Services';
 import { WhyLocal } from './components/WhyLocal';
 import { Testimonials } from './components/Testimonials';
 import { Footer } from './components/Footer';
+import { CustomCursor } from './components/CustomCursor';
 
 function App() {
   return (
-    <div className="font-sans antialiased text-gray-900 bg-white selection:bg-vi-red selection:text-white">
+    <div className="font-sans antialiased text-gray-900 bg-white selection:bg-vi-red selection:text-white cursor-none">
+      <CustomCursor />
       <Header />
       <main>
         <Hero />
@@ -16,9 +18,6 @@ function App() {
         <Testimonials />
       </main>
       <Footer />
-      
-      {/* Scroll to top visual fix only */}
-      <div className="fixed bottom-0 left-0 w-full h-1 bg-gradient-to-r from-vi-red to-vi-purple z-50"></div>
     </div>
   );
 }

@@ -1,131 +1,114 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { MapPin, UserCheck, Clock, ShieldCheck } from 'lucide-react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { MapPin, CheckCircle2 } from 'lucide-react';
 import { SectionId } from '../types';
 
 export const WhyLocal: React.FC = () => {
-  return (
-    <section id={SectionId.WHY_LOCAL} className="py-24 bg-white overflow-hidden relative">
-      
-      {/* Fiber Line Termination */}
-      <div className="absolute left-8 md:left-1/2 top-0 h-32 w-1 md:-ml-0.5 bg-gradient-to-b from-vi-purple to-transparent z-0 opacity-20"></div>
+  const sectionRef = useRef(null);
+  
+  // Map Zoom Effect
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start center", "center center"]
+  });
 
-      <div className="container mx-auto px-4 relative z-10">
+  const mapScale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
+  const mapFilter = useTransform(scrollYProgress, [0, 1], ["blur(4px) grayscale(100%)", "blur(0px) grayscale(0%)"]);
+  const pinY = useTransform(scrollYProgress, [0, 1], [-100, 0]);
+  const pinOpacity = useTransform(scrollYProgress, [0.5, 1], [0, 1]);
+
+  // Line continuing from previous section
+  const lineProgress = useTransform(scrollYProgress, [0, 0.5], ["0%", "100%"]);
+
+  return (
+    <section ref={sectionRef} id={SectionId.WHY_LOCAL} className="py-32 bg-gray-50 relative overflow-hidden">
+      
+      {/* Continuing Connectivity Line */}
+      <div className="absolute top-0 left-0 md:left-1/2 w-full md:w-0.5 md:-translate-x-1/2 h-32 hidden md:block">
+        <div className="w-full h-full bg-gray-200"></div>
+        <motion.div 
+           style={{ height: lineProgress }}
+           className="absolute top-0 left-0 w-full bg-vi-red shadow-[0_0_10px_rgba(230,0,0,0.3)]"
+        />
+      </div>
+
+      <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center gap-20">
           
-          {/* Text Content */}
-          <div className="lg:w-1/2">
+          {/* Content */}
+          <div className="lg:w-1/2 order-2 lg:order-1">
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-vi-red font-bold tracking-wide uppercase mb-3">The Ahmedabad Advantage</h2>
-              <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-8 leading-tight">
-                Why visit our <br/><span className="text-vi-purple">Physical Mini-Store?</span>
+              <h2 className="text-vi-purple font-semibold tracking-wide uppercase mb-4 text-sm">Local Advantage</h2>
+              <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8 leading-tight">
+                Precision Support <br/>in <span className="text-vi-red">Ahmedabad</span>
               </h3>
-              <p className="text-gray-600 text-xl mb-10 leading-relaxed">
-                Skip the call center queues. At our Vastrapur location, you get personalized attention from local experts who understand your network needs in Gujarat.
+              <p className="text-gray-500 text-lg mb-10 leading-relaxed font-light">
+                Digital is fast, but sometimes you need a human touch. Our Vastrapur experts provide instant resolutions for your complex network needs.
               </p>
 
-              <div className="space-y-8">
+              <div className="space-y-6">
                 {[
-                  { icon: UserCheck, title: "Personalized Service", desc: "Speak to a real person who understands Gujarati and Hindi." },
-                  { icon: Clock, title: "Instant Activation", desc: "Walk out with a working SIM in minutes, not days." },
-                  { icon: ShieldCheck, title: "Trusted Expertise", desc: "Authorized Vi partner ensuring secure document handling." }
+                  "Personalized Gujarati & Hindi Support",
+                  "Instant SIM Activation & MNP",
+                  "Authorized Documentation Center"
                 ].map((item, idx) => (
                   <motion.div 
                     key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.2, duration: 0.5 }}
-                    className="flex items-start space-x-5 group"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-center space-x-4 p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-vi-purple/20 transition-colors"
                   >
-                    <div className="flex-shrink-0 bg-vi-purple/5 p-4 rounded-2xl group-hover:bg-vi-purple/10 transition-colors">
-                      <item.icon className="text-vi-purple" size={28} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 text-xl mb-1 group-hover:text-vi-red transition-colors">{item.title}</h4>
-                      <p className="text-gray-600 font-medium">{item.desc}</p>
-                    </div>
+                    <CheckCircle2 className="text-vi-purple flex-shrink-0" size={20} />
+                    <span className="font-medium text-gray-800">{item}</span>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
           </div>
 
-          {/* Animated Map Visual - Pin Drop Effect */}
-          <div className="lg:w-1/2 relative w-full">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.8, y: 50 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
-              className="relative bg-white rounded-[2.5rem] p-4 shadow-2xl ring-8 ring-gray-50"
-            >
-               <div className="relative overflow-hidden rounded-[2rem] aspect-[4/3] bg-gray-100 border border-gray-200 group">
-                 {/* Abstract Map Roads */}
-                 <div className="absolute inset-0 opacity-40">
-                   <div className="absolute top-1/2 left-0 w-full h-12 bg-gray-300 rotate-12 transform -translate-y-1/2 scale-110"></div>
-                   <div className="absolute top-0 left-1/3 w-12 h-full bg-gray-300 scale-110"></div>
-                   <div className="absolute top-0 right-1/4 w-6 h-full bg-gray-300 -rotate-12 scale-110"></div>
-                 </div>
+          {/* Map Visual */}
+          <div className="lg:w-1/2 w-full order-1 lg:order-2 relative">
+             {/* Connection Point */}
+             <div className="absolute top-[-8rem] left-1/2 -translate-x-1/2 w-0.5 h-32 bg-gradient-to-b from-vi-red to-transparent hidden lg:block z-0"></div>
 
-                 {/* Landmarks */}
-                 <motion.div 
-                   initial={{ opacity: 0, scale: 0 }}
-                   whileInView={{ opacity: 1, scale: 1 }}
-                   transition={{ delay: 0.5 }}
-                   className="absolute top-16 right-16 bg-blue-50 text-blue-700 text-xs px-3 py-1.5 rounded-full font-bold shadow-sm border border-blue-100 z-10"
-                 >
-                   Vastrapur Lake
-                 </motion.div>
+             <motion.div 
+                style={{ scale: mapScale, filter: mapFilter }}
+                className="relative aspect-square md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gray-200 z-10"
+             >
+                {/* Abstract Map Layer */}
+                <iframe 
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  loading="lazy" 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.697915724581!2d72.5293!3d23.0350!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84aa5c4c5a9b%3A0x6a0a0a0a0a0a0a0a!2sVastrapur%20Lake%2C%20Ahmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+                  title="Map"
+                  className="opacity-80"
+                ></iframe>
 
-                 {/* Store Location Pin Animation - The Drop */}
-                 <div className="absolute inset-0 flex items-center justify-center z-20 pb-8">
-                   <div className="relative flex flex-col items-center">
-                     <motion.div
-                       initial={{ y: -500, opacity: 0 }}
-                       whileInView={{ y: 0, opacity: 1 }}
-                       transition={{ type: "spring", damping: 15, stiffness: 200, delay: 0.2 }}
-                       className="relative z-20"
-                     >
-                       <MapPin size={84} className="text-vi-red drop-shadow-2xl fill-vi-red text-white" />
-                       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full"></div>
-                     </motion.div>
-                     
-                     {/* Impact Ripple Effect */}
-                     <div className="absolute top-16 w-full flex justify-center z-0">
-                        <span className="flex h-24 w-24 relative">
-                          <motion.span 
-                            initial={{ scale: 0, opacity: 0 }}
-                            whileInView={{ scale: 2, opacity: 0 }}
-                            transition={{ duration: 1.5, repeat: Infinity, delay: 0.6 }}
-                            className="absolute inline-flex h-full w-full rounded-full bg-vi-red"
-                          ></motion.span>
-                          <motion.span 
-                            initial={{ scale: 0 }}
-                            whileInView={{ scale: 1 }}
-                            transition={{ type: "spring", delay: 0.4 }}
-                            className="relative inline-flex rounded-full h-24 w-24 bg-vi-red opacity-20"
-                          ></motion.span>
-                        </span>
-                     </div>
-
-                     <motion.div 
-                       initial={{ opacity: 0, y: 20 }}
-                       whileInView={{ opacity: 1, y: 0 }}
-                       transition={{ delay: 0.8 }}
-                       className="mt-8 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-xl shadow-xl border border-white/50 text-center min-w-[200px]"
-                     >
-                       <p className="font-extrabold text-gray-900 text-lg">Vi Mini Store</p>
-                       <p className="text-sm text-gray-600 font-medium">Open until 9:00 PM</p>
-                       <div className="mt-2 text-xs font-bold text-vi-red uppercase tracking-wider">Strongest Signal Here</div>
-                     </motion.div>
+                {/* The Pin Lock Animation */}
+                <motion.div 
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                  style={{ y: pinY, opacity: pinOpacity }}
+                >
+                   <div className="relative">
+                      <MapPin size={64} className="text-vi-red fill-current drop-shadow-xl" />
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 w-3 h-1 bg-black/20 blur-sm rounded-full"></div>
                    </div>
-                 </div>
-               </div>
-            </motion.div>
+                </motion.div>
+                
+                {/* Overlay Gradient */}
+                <div className="absolute inset-0 pointer-events-none border-[1px] border-black/5 rounded-3xl shadow-[inset_0_0_40px_rgba(0,0,0,0.05)]"></div>
+             </motion.div>
           </div>
+
         </div>
       </div>
     </section>
