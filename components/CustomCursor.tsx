@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
 
 export const CustomCursor: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -12,6 +13,29 @@ export const CustomCursor: React.FC = () => {
   const ringY = useSpring(cursorY, springConfig);
 
   useEffect(() => {
+    // Check if device has a fine pointer (mouse/trackpad) to avoid showing on mobile
+    const mediaQuery = window.matchMedia('(pointer: fine)');
+    
+    const handleDeviceChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsVisible(e.matches);
+    };
+
+    // Initial check
+    handleDeviceChange(mediaQuery);
+
+    // Listen for changes
+    mediaQuery.addEventListener('change', handleDeviceChange);
+
+    return () => mediaQuery.removeEventListener('change', handleDeviceChange);
+  }, []);
+
+  useEffect(() => {
+    // If not on a device with a fine pointer, do not attach listeners or hide cursor
+    if (!isVisible) return;
+
+    // Hide default cursor globally when custom cursor is active
+    document.documentElement.style.cursor = 'none';
+
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
@@ -37,15 +61,18 @@ export const CustomCursor: React.FC = () => {
     window.addEventListener('mouseover', handleMouseOver);
 
     return () => {
+      // Restore default cursor
+      document.documentElement.style.cursor = 'auto';
       window.removeEventListener('mousemove', moveCursor);
       window.removeEventListener('mouseover', handleMouseOver);
     };
-  }, [cursorX, cursorY]);
+  }, [isVisible, cursorX, cursorY]);
+
+  if (!isVisible) return null;
 
   return (
     <>
       {/* Primary Dot - Instant movement */}
-      {/* Changed bg to white for better mix-blend-difference contrast on dark backgrounds */}
       <motion.div
         className="fixed top-0 left-0 w-3 h-3 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference"
         style={{

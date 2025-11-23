@@ -8,7 +8,7 @@ import { CustomCursor } from './components/CustomCursor';
 
 function App() {
   return (
-    <div className="font-sans antialiased text-gray-900 bg-white selection:bg-vi-red selection:text-white cursor-none">
+    <div className="font-sans antialiased text-gray-900 bg-white selection:bg-vi-red selection:text-white">
       <CustomCursor />
       <Header />
       <main>
